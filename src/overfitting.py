@@ -1,0 +1,36 @@
+import numpy as np
+from matplotlib import pyplot as matplt
+
+# acy_0 = np.load("test_acy_.npy")
+# acy_1 = np.load("test_acy_L1.npy")
+# acy_2 = np.load("test_acy_L2.npy")
+# acy_3 = np.load("test_acy_DP.npy")
+# acy_4 = np.load("test_acy_DPL2.npy")
+# z = range(0, 200);
+# matplt.plot(z, acy_0, 'r-',label="Init")
+# matplt.plot(z, acy_1, 'g-',label="L1")
+# matplt.plot(z, acy_2, 'b-',label="L2")
+# matplt.plot(z, acy_3, 'y-',label="DP")
+# matplt.plot(z, acy_4, 'k-',label="DPL2")
+# acy_0 = np.load("test_acy__qinit.npy")
+# acy_1 = np.load("test_acy_L1_qinit.npy")
+# acy_2 = np.load("test_acy_L2_qinit.npy")
+# acy_3 = np.load("test_acy_DP_qinit.npy")
+# acy_4 = np.load("test_acy_DPL2_qinit.npy")
+# matplt.plot(z, acy_0, 'r--+',label="Init_q")
+# matplt.plot(z, acy_1, 'g--+',label="L1_q")
+# matplt.plot(z, acy_2, 'b--+',label="L2_q")
+# matplt.plot(z, acy_3, 'y--+',label="DP_q")
+# matplt.plot(z, acy_4, 'k--+',label="DPL2_q")
+# matplt.grid()
+# matplt.legend(loc='upper center', bbox_to_anchor=(0.6,0.4),ncol=3,fancybox=True,shadow=True)
+# matplt.show()
+
+acy_0 = np.load("test_acy__qinit.npy")
+acy_1 = np.load("test_acy_MO_qinit.npy")
+z = range(0, 30);
+matplt.plot(z, acy_0, 'r-',label="Init")
+matplt.plot(z, acy_1, 'g-',label="MO")
+matplt.grid()
+matplt.legend(loc='upper center', bbox_to_anchor=(0.6,0.4),ncol=3,fancybox=True,shadow=True)
+matplt.show()

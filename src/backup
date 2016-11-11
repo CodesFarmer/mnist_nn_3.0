@@ -1,0 +1,25 @@
+        for j in xrange(0,self.numlayers):
+            len = self.sizes[j]
+            pos = range(len)
+            random.shuffle(pos)
+            nnw_dp.append(pos)
+
+        weights = self.weights
+        biases = self.biases
+        for j in xrange(1,self.numlayers-1):
+            len = self.sizes[j]
+            pos = range(len)
+            random.shuffle(pos)
+            wi = np.ones((self.sizes[j], self.sizes[j-1]))
+            bi = np.ones((self.sizes[j], 1))
+            for iter in pos[len/2:]:
+                tmp = np.zeros((1, self.sizes[j-1]))
+                wi[iter] = tmp
+                bi[iter] = 0
+            dis_w.append(wi)
+            dis_b.append(bi)
+        self.weights = [w*ws for w,ws in zip(self.weights,dis_w)]
+        self.biases = [b*bs for b,bs in zip(self.biases, dis_b)]
+        self.update_network(tr_d, lr)
+        self.weights = weights
+        self.biases = biases

@@ -36,7 +36,7 @@ class Network(object):
         :param lr: the learning rate
         :param mode: the approach for training, BGD or SGD
         """
-        lmbda, rho, beta, mu = translate_par(parameters)
+        lmbda, rho, beta, mu, perc = translate_par(parameters)
 
         if(mode == "BGD"):
             self.BGD(tr_d,va_d,epochs,lr, relz,lmbda, mu)
@@ -61,7 +61,7 @@ class Network(object):
                 print "Epoch {0}: {1}/{2}".format(j, self.Evaluate(va_d),len(va_d))
             else:
                 print "Epoch {0}:".format(j)
-    def SGD(self, tr_d, va_d, epochs, lr, relz="", lmbda=0.0, mu=0.0):
+    def SGD(self, tr_d, va_d, epochs, lr, relz="", lmbda=0.0, mu=0.0,perc=1.0):
         """
         This function realizes the stochastic gradient descent
         First, we split the dataset into m batches, the we update the
@@ -79,7 +79,7 @@ class Network(object):
                 if(relz[0:2] != "DP"):
                     self.update_network(tr_batch,lr, relz, lmbda, mu)
                 else:
-                    self.update_network_dp(tr_batch,lr,relz[2:], lmbda, mu)
+                    self.update_network_dp(tr_batch,lr,relz[2:], lmbda,perc, mu)
             acy = self.Evaluate(va_d)
             accuracy.append(acy)
             if (va_d):
@@ -185,10 +185,9 @@ class Network(object):
         qcost_sum = [np.sqrt(np.dot(x.transpose(), x)) for x in qcost_te]
         cost = np.mean(qcost_sum)
         return (acy,cost)
-    def update_network_dp(self, tr_d, lr, relz="", lmbda =0.0):#
+    def update_network_dp(self, tr_d, lr, relz="", lmbda =0.0,perc=1.0,mu=0.0):#
         #random discard some neurons
         nnw_dp = []
-        perc = 0.8#0.8
         for j in xrange(0,self.numlayers):
             len = self.sizes[j]
             pos = range(len)
@@ -216,7 +215,7 @@ class Network(object):
                 wi[iter] = tmp
             wi = wi.transpose()
             self.weights[j] = wi
-        self.update_network(tr_d, lr, relz, lmbda)
+        self.update_network(tr_d, lr, relz, lmbda, mu)
         for j in xrange(1,self.numlayers-1):
             len = self.sizes[j]
             #left
@@ -283,6 +282,7 @@ def translate_par(parms):
     beta=0.0
     lmbda=0.0
     mu = 0.0
+    perc = 1.0
     for par in str:
         par = string.strip(par, " ")
         tandv = string.split(par, " ")
@@ -294,4 +294,6 @@ def translate_par(parms):
             lmbda = float(tandv[1])
         elif(tandv[0] == '-m'):
             mu = float(tandv[1])
-    return (lmbda,rho,beta,mu)
+        elif(tandv[0] == '-p'):
+            perc = float(tandv[1])
+    return (lmbda,rho,beta,mu,perc)
